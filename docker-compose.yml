@@ -1,0 +1,141 @@
+version: '3'
+services:
+  horse:
+    restart: always
+    image: ghcr.io/joint-online-judge/horse:${HORSE_TAG:-latest}
+    container_name: horse
+    depends_on:
+      - postgres
+      - redis
+      - lakefs
+    ports:
+      - '34765:34765'
+    networks:
+      - default
+    environment:
+      HOST: horse
+      DB_HOST: postgres
+      DB_NAME: horse_production
+      DB_USERNAME: ${POSTGRES_USER:-postgres}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-pass}
+      DOMAIN: ${DOMAIN:-127.0.0.1:34765}
+      FORWARDED_ALLOW_IPS: ${FORWARDED_ALLOW_IPS:-*}
+      REDIS_HOST: redis
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-sider}
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-rabbitmq}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-pass}
+      RABBITMQ_VHOST: ${RABBITMQ_VHOST:-joj}
+      S3_HOST: minio
+      S3_PORT: 9000
+      S3_USERNAME: minioadmin
+      S3_PASSWORD: minioadmin
+      LAKEFS_S3_DOMAIN: s3.lakefs.example.com
+      LAKEFS_HOST: lakefs
+      LAKEFS_PORT: 8000
+      LAKEFS_USERNAME: ${LAKEFS_ACCESS_KEY_ID:-AKIAJBBEXWP4VZLK65TQ}
+      LAKEFS_PASSWORD: ${LAKEFS_SECRET_ACCESS_KEY:-2AITo44il6u2S05zJASbDsBFZuPBQl6jC0tXW3Hq}
+      JWT_SECRET: 33723d5b188ff63597367fa1d4ca7745524fa950802f844672c6c524e4c7ae0e
+      ROLLBAR_ACCESS_TOKEN: " "
+    tty: true
+  postgres:
+    restart: always
+    image: postgres:13.3
+    container_name: postgres
+    ports:
+      - "9032:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pass}
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_MULTIPLE_DATABASES: lakefs horse_production
+    volumes:
+      - /opt/joj_data:/var/lib/postgresql/data
+      - type: bind
+        source: ./postgresql-initdb.sh
+        target: /docker-entrypoint-initdb.d/postgresql-initdb.sh
+        read_only: true
+    networks:
+      - default
+    tty: true
+  minio:
+    restart: always
+    image: "minio/minio"
+    container_name: minio
+    ports:
+      - "9090:9000"
+      - "9091:9091"
+    volumes:
+      - /opt/joj_data/minio/data:/data
+      - /opt/joj_data/minio/config:/root/.minio
+    networks:
+      - default
+    command: server /data --console-address ":9091"
+    tty: true
+  lakefs:
+    restart: always
+    image: treeverse/lakefs:0.46.0
+    container_name: lakefs
+    ports:
+      - "34766:8000"
+    depends_on:
+      - postgres
+      - minio
+    environment:
+      - LAKEFS_AUTH_ENCRYPT_SECRET_KEY=${LAKEFS_AUTH_ENCRYPT_SECRET_KEY:-some random secret string}
+      - LAKEFS_DATABASE_CONNECTION_STRING=postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-pass}@postgres/lakefs?sslmode=disable
+      - LAKEFS_BLOCKSTORE_TYPE=${LAKEFS_BLOCKSTORE_TYPE:-s3}
+      - LAKEFS_BLOCKSTORE_S3_ENDPOINT=http://minio:9000
+      - LAKEFS_BLOCKSTORE_S3_FORCE_PATH_STYLE=true
+      - LAKEFS_BLOCKSTORE_S3_CREDENTIALS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-minioadmin}
+      - LAKEFS_BLOCKSTORE_S3_CREDENTIALS_ACCESS_SECRET_KEY=${AWS_SECRET_ACCESS_KEY:-minioadmin}
+      - LAKEFS_GATEWAYS_S3_DOMAIN_NAME=${LAKEFS_GATEWAYS_S3_DOMAIN_NAME:-s3.lakefs.example.com:8000}
+      - LAKEFS_LOGGING_LEVEL=${LAKEFS_LOGGING_LEVEL:-INFO}
+      - LAKEFS_STATS_ENABLED=true
+      - LAKEFS_COMMITTED_LOCAL_CACHE_DIR=${LAKEFS_COMMITTED_LOCAL_CACHE_DIR:-/home/lakefs/.local_tier}
+      - LAKEFS_USERNAME=${LAKEFS_USERNAME:-lakefs}
+      - LAKEFS_ACCESS_KEY_ID=${LAKEFS_ACCESS_KEY_ID:-AKIAJBBEXWP4VZLK65TQ}
+      - LAKEFS_SECRET_ACCESS_KEY=${LAKEFS_SECRET_ACCESS_KEY:-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}
+    volumes:
+      - type: bind
+        source: ./lakefs-start.sh
+        target: /home/lakefs/lakefs-start.sh
+        read_only: true
+    networks:
+      default:
+        aliases:
+          - s3.lakefs.example.com
+    tty: true
+    entrypoint: [ "/bin/sh", "/home/lakefs/lakefs-start.sh"]
+  redis:
+    restart: always
+    image: redis:6.2.4-alpine
+    container_name: redis
+    ports:
+      - '9079:6379'
+    volumes:
+      - /opt/redis_data:/data
+    networks:
+      - default
+    tty: true
+    command: redis-server --requirepass ${REDIS_PASSWORD:-sider}
+  rabbitmq:
+    restart: always
+    image: rabbitmq:3.9-alpine
+    container_name: rabbitmq
+    ports:
+      - '9672:5672'
+    volumes:
+      - /opt/rabbitmq_data:/var/lib/rabbitmq
+      - type: bind
+        source: ./rabbitmq-start.sh
+        target: /root/rabbitmq-start.sh
+        read_only: true
+    tty: true
+    command: [ "/bin/bash", "/root/rabbitmq-start.sh"]
+    environment:
+      RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-rabbitmq}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-pass}
+      RABBITMQ_VHOST: ${RABBITMQ_VHOST:-joj}
+networks:
+  default:

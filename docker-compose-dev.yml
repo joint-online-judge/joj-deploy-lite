@@ -1,0 +1,12 @@
+version: '3'
+services:
+  horse:
+    image: ghcr.io/joint-online-judge/horse:test
+    environment:
+      DEBUG: "true"
+      OAUTH_GITHUB: "true"
+      OAUTH_GITHUB_ID: 78****************30
+      OAUTH_GITHUB_SECRET: 2b************************************95
+    volumes:
+      - ${HORSE_SRC}/joj/horse:/root/joj/horse
+      - ${HORSE_SRC}/migrations:/root/migrations

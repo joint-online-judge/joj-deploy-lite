@@ -1,0 +1,30 @@
+services:
+  adminer:
+    restart: always
+    image: adminer
+    container_name: adminer
+    ports:
+      - '34767:8080'
+    networks:
+      - default
+    tty: true
+  flower:
+    restart: always
+    image: mher/flower
+    container_name: flower
+    environment:
+      - CELERY_BROKER_URL=redis://:${REDIS_PASSWORD:-sider}@redis:6379/0
+    ports:
+      - '34768:5555'
+    tty: true
+    command: celery flower --basic_auth=admin:drowssap
+  redis-commander:
+    restart: always
+    image: rediscommander/redis-commander:latest
+    container_name: redis-commander
+    environment:
+      - REDIS_HOSTS=local:redis:6379:0:${REDIS_PASSWORD:-sider}
+      - HTTP_USER=admin
+      - HTTP_PASSWORD=drowssap
+    ports:
+      - "34769:8081"

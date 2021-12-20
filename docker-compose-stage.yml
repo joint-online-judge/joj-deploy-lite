@@ -1,0 +1,38 @@
+version: '3'
+services:
+  horse:
+    restart: "no"
+    image: ghcr.io/joint-online-judge/horse:test
+    container_name: horse
+    ports:
+      - '34765:34765'
+    networks:
+      - default
+    environment:
+      DEBUG: "true"
+      HOST: horse
+      DB_HOST: nichujie.xyz
+      DB_PORT: 9032
+      DB_NAME: horse_production
+      DB_USERNAME: postgres
+      DB_PASSWORD: pass
+      REDIS_HOST: nichujie.xyz
+      REDIS_PORT: 9079
+      REDIS_PASSWORD: sider
+      S3_HOST: nichujie.xyz
+      S3_PORT: 9090
+      S3_USERNAME: minioadmin
+      S3_PASSWORD: minioadmin
+      LAKEFS_S3_DOMAIN: s3.lakefs.example.com
+      LAKEFS_HOST: nichujie.xyz
+      LAKEFS_PORT: 34766
+      LAKEFS_USERNAME: AKIAJBBEXWP4VZLK65TQ
+      LAKEFS_PASSWORD: 2AITo44il6u2S05zJASbDsBFZuPBQl6jC0tXW3Hq
+      JWT_SECRET: 33723d5b188ff63597367fa1d4ca7745524fa950802f844672c6c524e4c7ae0e
+    volumes:
+      - ${HORSE_SRC}/joj/horse:/root/joj/horse
+      - ${HORSE_SRC}/migrations:/root/migrations
+    tty: true
+networks:
+  default:
+
