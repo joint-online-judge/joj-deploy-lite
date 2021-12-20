@@ -5,8 +5,8 @@ services:
     environment:
       DEBUG: "true"
       OAUTH_GITHUB: "true"
-      OAUTH_GITHUB_ID: 78****************30
-      OAUTH_GITHUB_SECRET: 2b************************************95
+      OAUTH_GITHUB_ID: ${OAUTH_GITHUB_ID:-}
+      OAUTH_GITHUB_SECRET: ${OAUTH_GITHUB_SECRET:-}
     volumes:
       - ${HORSE_SRC}/joj/horse:/root/joj/horse
       - ${HORSE_SRC}/migrations:/root/migrations
