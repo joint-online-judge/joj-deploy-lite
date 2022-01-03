@@ -13,12 +13,6 @@ check_env_vars() {
     echo "HORSE_SRC=$HORSE_SRC"
 }
 
-build_horse_image_with_test() {
-    cd $HORSE_SRC
-    DOCKER_BUILDKIT=1 docker build --build-arg PYTEST=1 -t ghcr.io/joint-online-judge/horse:test .
-    cd - >/dev/null
-}
-
 if [[ $1 == "prod" || $1 == "dev" || $1 == "stage" ]]; then
     docker-compose pull
     if [[ $1 != "prod" ]]; then
@@ -34,14 +28,12 @@ fi
 
 case "$1" in
 "prod")
-    docker-compose -f docker-compose.yml -f docker-compose-ui.yml -p joj2 up -d
+    docker-compose -f docker-compose.yml -f docker-compose-ui.yml -f docker-compose-prod.yml up -d
     ;;
 "dev")
-    build_horse_image_with_test
     docker-compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-ui.yml -p joj2 up -d
     ;;
 "stage")
-    build_horse_image_with_test
     docker-compose -f docker-compose-stage.yml -p joj2 up -d
     ;;
 esac
