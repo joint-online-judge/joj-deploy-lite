@@ -15,6 +15,8 @@ set -u
     rabbitmqctl set_permissions -p $RABBITMQ_VHOST $RABBITMQ_USERNAME ".*" ".*" ".*";
 ) &
 
+echo "management_agent.disable_metrics_collector = false" > /etc/rabbitmq/conf.d/management_agent.disable_metrics_collector.conf
+rabbitmq-plugins enable --offline rabbitmq_management
 rabbitmq-server $@
 
 
