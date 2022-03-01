@@ -137,5 +137,45 @@ services:
       RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-rabbitmq}
       RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-pass}
       RABBITMQ_VHOST: ${RABBITMQ_VHOST:-joj}
+  tiger-1:
+    restart: always
+    image: ghcr.io/joint-online-judge/tiger:${TIGER_TAG:-latest}
+    privileged: true
+    depends_on:
+      - horse
+    networks:
+      - default
+    tty: true
+    container_name: tiger-1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      HORSE_USERNAME: ${HORSE_USERNAME_1:-horse1}
+      HORSE_PASSWORD: ${HORSE_PASSWORD_1:-passwd1}
+      REDIS_HOST: redis
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-sider}
+      BACKEND_URL: rpc://
+      BROKER_URL: amqp://${RABBITMQ_USERNAME:-rabbitmq}:${RABBITMQ_PASSWORD:-pass}@rabbitmq:5672/${RABBITMQ_VHOST:-joj}
+      WORKER_NAME: tiger-1
+  tiger-2:
+    restart: always
+    image: ghcr.io/joint-online-judge/tiger:${TIGER_TAG:-latest}
+    privileged: true
+    depends_on:
+      - horse
+    networks:
+      - default
+    tty: true
+    container_name: tiger-2
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      HORSE_USERNAME: ${HORSE_USERNAME_1:-horse2}
+      HORSE_PASSWORD: ${HORSE_PASSWORD_1:-passwd2}
+      REDIS_HOST: redis
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-sider}
+      BACKEND_URL: rpc://
+      BROKER_URL: amqp://${RABBITMQ_USERNAME:-rabbitmq}:${RABBITMQ_PASSWORD:-pass}@rabbitmq:5672/${RABBITMQ_VHOST:-joj}
+      WORKER_NAME: tiger-2
 networks:
   default:
