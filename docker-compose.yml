@@ -125,6 +125,7 @@ services:
     container_name: rabbitmq
     ports:
       - '9672:5672'
+      - '9673:15672'
     volumes:
       - /opt/rabbitmq_data:/var/lib/rabbitmq
       - type: bind
