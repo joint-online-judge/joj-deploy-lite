@@ -14,10 +14,10 @@ check_env_vars() {
 }
 
 if [[ $1 == "lite" || $1 == "dev" || $1 == "stage" ]]; then
-    docker-compose pull
     if [[ $1 != "lite" ]]; then
         check_env_vars
     fi
+    docker-compose pull
 elif [[ $1 == "help" ]]; then
     echo $USAGE
     exit 0
@@ -28,7 +28,7 @@ fi
 
 case "$1" in
 "lite")
-    docker-compose -f docker-compose.yml up -d
+    docker-compose -f docker-compose.yml -f docker-compose-lite.yml up -d
     ;;
 "dev")
     docker-compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-ui.yml -p joj2 up -d
