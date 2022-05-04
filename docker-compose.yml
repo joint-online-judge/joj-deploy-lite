@@ -144,6 +144,7 @@ services:
     privileged: true
     depends_on:
       - horse
+      - rabbitmq
     networks:
       - default
     tty: true
@@ -164,6 +165,7 @@ services:
     privileged: true
     depends_on:
       - horse
+      - rabbitmq
     networks:
       - default
     tty: true
