@@ -10,6 +10,7 @@ set -x
     sleep 5;
     echo "rabbitmq startup events..."
     #rabbitmqctl wait --timeout 60 /var/lib/rabbitmq/mnesia/rabbitmq.pid
+    rabbitmqctl start_app;
     rabbitmqctl await_startup;
     rabbitmqctl add_user $RABBITMQ_USERNAME $RABBITMQ_PASSWORD;
     rabbitmqctl set_user_tags $RABBITMQ_USERNAME administrator;
