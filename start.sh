@@ -17,7 +17,7 @@ if [[ $1 == "lite" || $1 == "dev" || $1 == "stage" ]]; then
     if [[ $1 != "lite" ]]; then
         check_env_vars
     fi
-    docker-compose pull
+    docker-compose pull --force-recreate
 elif [[ $1 == "help" ]]; then
     echo $USAGE
     exit 0
