@@ -133,7 +133,7 @@ services:
         target: /root/rabbitmq-start.sh
         read_only: true
     tty: true
-    command: [ "/bin/bash", "/root/rabbitmq-start.sh"]
+    command: ["/bin/bash", "/root/rabbitmq-start.sh"]
     environment:
       RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-rabbitmq}
       RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-pass}
