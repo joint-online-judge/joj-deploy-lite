@@ -13,6 +13,7 @@ set -u
     rabbitmqctl set_user_tags $RABBITMQ_USERNAME administrator;
     rabbitmqctl add_vhost $RABBITMQ_VHOST;
     rabbitmqctl set_permissions -p $RABBITMQ_VHOST $RABBITMQ_USERNAME ".*" ".*" ".*";
+    rabbitmqctl start_app
 ) &
 
 echo "management_agent.disable_metrics_collector = false" > /etc/rabbitmq/conf.d/management_agent.disable_metrics_collector.conf
