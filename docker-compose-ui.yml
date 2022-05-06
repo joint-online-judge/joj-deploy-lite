@@ -13,7 +13,8 @@ services:
     image: mher/flower
     container_name: flower
     environment:
-      - CELERY_BROKER_URL=redis://:${REDIS_PASSWORD:-sider}@redis:6379/0
+      CELERY_BACKEND_URL: rpc://
+      CELERY_BROKER_URL: amqp://${RABBITMQ_USERNAME:-rabbitmq}:${RABBITMQ_PASSWORD:-pass}@rabbitmq:5672/${RABBITMQ_VHOST:-joj}
     ports:
       - '34768:5555'
     tty: true
