@@ -133,7 +133,7 @@ services:
         target: /root/rabbitmq-start.sh
         read_only: true
     tty: true
-    command: ["/bin/bash", "/root/rabbitmq-start.sh"]
+    command: [ "/bin/bash", "/root/rabbitmq-start.sh"]
     environment:
       RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-rabbitmq}
       RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-pass}
@@ -152,8 +152,11 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      HORSE_USERNAME: ${HORSE_USERNAME_1:-horse1}
-      HORSE_PASSWORD: ${HORSE_PASSWORD_1:-passwd1}
+      HORSE_USERNAME: ${HORSE_USERNAME_1:-tiger-1}
+      HORSE_PASSWORD: ${HORSE_PASSWORD_1:-string}
+      LAKEFS_S3_DOMAIN: s3.lakefs.example.com
+      LAKEFS_HOST: lakefs
+      LAKEFS_PORT: 8000
       REDIS_HOST: redis
       REDIS_PASSWORD: ${REDIS_PASSWORD:-sider}
       BACKEND_URL: rpc://
@@ -173,8 +176,11 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      HORSE_USERNAME: ${HORSE_USERNAME_1:-horse2}
-      HORSE_PASSWORD: ${HORSE_PASSWORD_1:-passwd2}
+      HORSE_USERNAME: ${HORSE_USERNAME_2:-tiger-2}
+      HORSE_PASSWORD: ${HORSE_PASSWORD_2:-string}
+      LAKEFS_S3_DOMAIN: s3.lakefs.example.com
+      LAKEFS_HOST: lakefs
+      LAKEFS_PORT: 8000
       REDIS_HOST: redis
       REDIS_PASSWORD: ${REDIS_PASSWORD:-sider}
       BACKEND_URL: rpc://
