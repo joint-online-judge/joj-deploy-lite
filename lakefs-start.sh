@@ -8,5 +8,5 @@ set -u
 
 
 
-/app/lakefs setup --user-name lakefs --access-key-id ${LAKEFS_ACCESS_KEY_ID} --secret-access-key ${LAKEFS_SECRET_ACCESS_KEY} || true
+/app/lakefs setup --user-name horse --access-key-id ${LAKEFS_ACCESS_KEY_ID} --secret-access-key ${LAKEFS_SECRET_ACCESS_KEY} || true
 /app/lakefs run

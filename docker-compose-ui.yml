@@ -1,4 +1,7 @@
 services:
+  lakefs:
+    ports:
+      - "34766:8000"
   adminer:
     restart: always
     image: adminer
@@ -29,3 +32,19 @@ services:
       - HTTP_PASSWORD=drowssap
     ports:
       - "34769:8081"
+  rabbitmq:
+    ports:
+      - '34770:15672'
+    command: [ "/bin/bash", "/root/rabbitmq-start.sh", "--ui"]
+  dozzle:
+    restart: always
+    image: amir20/dozzle:latest
+    container_name: dozzle
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "34771:8080"
+    environment:
+      - DOZZLE_USERNAME=admin
+      - DOZZLE_PASSWORD=drowssap
+      - DOZZLE_KEY=2A472D4B6150645367566B5970337336

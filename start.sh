@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-USAGE="usage: $0 [lite|dev|stage]"
+USAGE="usage: $0 [dev|stage]"
 
 check_env_vars() {
     if [ -f .env ]; then
@@ -15,10 +15,8 @@ check_env_vars() {
     echo "TIGER_SRC=$TIGER_SRC"
 }
 
-if [[ $1 == "lite" || $1 == "dev" || $1 == "stage" ]]; then
-    if [[ $1 != "lite" ]]; then
-        check_env_vars
-    fi
+if [[ $1 == "dev" || $1 == "stage" ]]; then
+    check_env_vars
 elif [[ $1 == "help" ]]; then
     echo $USAGE
     exit 0
@@ -28,10 +26,6 @@ else
 fi
 
 case "$1" in
-"lite")
-    docker-compose -f docker-compose.yml -f docker-compose-lite.yml pull
-    docker-compose -f docker-compose.yml -f docker-compose-lite.yml up -d
-    ;;
 "dev")
     docker-compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-ui.yml pull
     docker-compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-ui.yml -p joj2 up -d --force-recreate
