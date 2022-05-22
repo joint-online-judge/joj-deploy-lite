@@ -20,7 +20,7 @@ set -x
 
 echo "starting rabbitmq..."
 echo "management_agent.disable_metrics_collector = false" > /etc/rabbitmq/conf.d/management_agent.disable_metrics_collector.conf
-if [[ $1 == "--ui" ]]; then
+if [[ "$#" -eq "1" && $1 == "--ui" ]]; then
     rabbitmq-plugins enable --offline rabbitmq_management
 fi
 rabbitmq-server $@
