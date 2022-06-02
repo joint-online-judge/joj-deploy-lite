@@ -145,16 +145,17 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      HORSE_USERNAME: ${HORSE_USERNAME_1:-tiger-1}
-      HORSE_PASSWORD: ${HORSE_PASSWORD_1:-string}
+      HORSE_USERNAME: ${TIGER_1_USERNAME:-tiger-1}
+      HORSE_PASSWORD: ${TIGER_1_PASSWORD:-string}
       LAKEFS_S3_DOMAIN: s3.lakefs.example.com
       LAKEFS_HOST: lakefs
       LAKEFS_PORT: 8000
+      LAKEFS_USERNAME: ${TIGER_1_LAKEFS_USERNAME:-}
+      LAKEFS_PASSWORD: ${TIGER_1_LAKEFS_PASSWORD:-}
       REDIS_HOST: redis
       REDIS_PASSWORD: ${REDIS_PASSWORD:-sider}
       BACKEND_URL: rpc://
       BROKER_URL: amqp://${RABBITMQ_USERNAME:-rabbitmq}:${RABBITMQ_PASSWORD:-pass}@rabbitmq:5672/${RABBITMQ_VHOST:-joj}
-      WORKER_NAME: tiger-1
   tiger-2:
     restart: always
     image: ghcr.io/joint-online-judge/tiger:${TIGER_TAG:-latest}
@@ -169,15 +170,16 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      HORSE_USERNAME: ${HORSE_USERNAME_2:-tiger-2}
-      HORSE_PASSWORD: ${HORSE_PASSWORD_2:-string}
+      HORSE_USERNAME: ${TIGER_2_USERNAME:-tiger-2}
+      HORSE_PASSWORD: ${TIGER_2_USERNAME:-string}
       LAKEFS_S3_DOMAIN: s3.lakefs.example.com
       LAKEFS_HOST: lakefs
       LAKEFS_PORT: 8000
+      LAKEFS_USERNAME: ${TIGER_2_LAKEFS_USERNAME:-}
+      LAKEFS_PASSWORD: ${TIGER_2_LAKEFS_PASSWORD:-}
       REDIS_HOST: redis
       REDIS_PASSWORD: ${REDIS_PASSWORD:-sider}
       BACKEND_URL: rpc://
       BROKER_URL: amqp://${RABBITMQ_USERNAME:-rabbitmq}:${RABBITMQ_PASSWORD:-pass}@rabbitmq:5672/${RABBITMQ_VHOST:-joj}
-      WORKER_NAME: tiger-2
 networks:
   default:

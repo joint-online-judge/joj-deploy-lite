@@ -12,8 +12,6 @@ services:
     image: ghcr.io/joint-online-judge/tiger:test
     environment:
       DEBUG: "true"
-      LAKEFS_USERNAME: ${TIGER_LAKEFS_USERNAME_1:-}
-      LAKEFS_PASSWORD: ${TIGER_LAKEFS_PASSWORD_1:-}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${TIGER_SRC}/joj/tiger:/root/joj/tiger
@@ -23,8 +21,6 @@ services:
   tiger-2:
     environment:
       DEBUG: "true"
-      LAKEFS_USERNAME: ${TIGER_LAKEFS_USERNAME_2:-}
-      LAKEFS_PASSWORD: ${TIGER_LAKEFS_PASSWORD_2:-}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${TIGER_SRC}/joj/tiger:/root/joj/tiger
