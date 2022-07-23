@@ -3,7 +3,7 @@ services:
   horse:
     restart: always
     image: ghcr.io/joint-online-judge/horse:${HORSE_TAG:-latest}
-    container_name: horse
+    container_name: joj2-horse
     depends_on:
       - postgres
       - redis
@@ -46,7 +46,7 @@ services:
   postgres:
     restart: always
     image: postgres:13.3
-    container_name: postgres
+    container_name: joj2-postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pass}
@@ -64,7 +64,7 @@ services:
   minio:
     restart: always
     image: "minio/minio"
-    container_name: minio
+    container_name: joj2-minio
     volumes:
       - /opt/joj_data/minio/data:/data
       - /opt/joj_data/minio/config:/root/.minio
@@ -75,7 +75,7 @@ services:
   lakefs:
     restart: always
     image: treeverse/lakefs:0.46.0
-    container_name: lakefs
+    container_name: joj2-lakefs
     depends_on:
       - postgres
       - minio
@@ -108,7 +108,7 @@ services:
   redis:
     restart: always
     image: redis:6.2.4-alpine
-    container_name: redis
+    container_name: joj2-redis
     volumes:
       - /opt/redis_data:/data
     networks:
@@ -118,7 +118,7 @@ services:
   rabbitmq:
     restart: always
     image: rabbitmq:3.9-alpine
-    container_name: rabbitmq
+    container_name: joj2-rabbitmq
     volumes:
       - /opt/rabbitmq_data:/var/lib/rabbitmq
       - type: bind
@@ -141,7 +141,7 @@ services:
     networks:
       - default
     tty: true
-    container_name: tiger-1
+    container_name: joj2-tiger-1
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
@@ -166,7 +166,7 @@ services:
     networks:
       - default
     tty: true
-    container_name: tiger-2
+    container_name: joj2-tiger-2
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:

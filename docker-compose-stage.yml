@@ -3,7 +3,6 @@ services:
   horse:
     restart: "no"
     image: ghcr.io/joint-online-judge/horse:test
-    container_name: horse
     ports:
       - '34765:34765'
     networks:
