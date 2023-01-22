@@ -27,3 +27,6 @@ services:
       - ${TIGER_SRC}/runner:/root/runner
       - ${TIGER_SRC}/toolchains:/root/toolchains
       - ${ELEPHANT_SRC}/joj/elephant:/root/.venv/lib/python3.8/site-packages/joj/elephant
+  postgres:
+    ports:
+      - '5433:5432'
