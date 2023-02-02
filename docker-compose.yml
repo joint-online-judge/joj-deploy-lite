@@ -13,25 +13,25 @@ services:
     networks:
       - default
     environment:
-      HOST: horse
-      DB_HOST: postgres
+      HOST: joj2-horse
+      DB_HOST: joj2-postgres
       DB_NAME: horse_production
       DB_USERNAME: ${POSTGRES_USER:-postgres}
       DB_PASSWORD: ${POSTGRES_PASSWORD:-pass}
       DOMAIN: ${DOMAIN:-127.0.0.1:34765}
       FORWARDED_ALLOW_IPS: ${FORWARDED_ALLOW_IPS:-*}
-      REDIS_HOST: redis
+      REDIS_HOST: joj2-redis
       REDIS_PASSWORD: ${REDIS_PASSWORD:-sider}
-      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_HOST: joj2-rabbitmq
       RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-rabbitmq}
       RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-pass}
       RABBITMQ_VHOST: ${RABBITMQ_VHOST:-joj}
-      S3_HOST: minio
+      S3_HOST: joj2-minio
       S3_PORT: 9000
       S3_USERNAME: minioadmin
       S3_PASSWORD: minioadmin
       LAKEFS_S3_DOMAIN: s3.lakefs.example.com
-      LAKEFS_HOST: lakefs
+      LAKEFS_HOST: joj2-lakefs
       LAKEFS_PORT: 8000
       LAKEFS_USERNAME: ${LAKEFS_ACCESS_KEY_ID:-AKIAJBBEXWP4VZLK65TQ}
       LAKEFS_PASSWORD: ${LAKEFS_SECRET_ACCESS_KEY:-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}
@@ -81,9 +81,9 @@ services:
       - minio
     environment:
       - LAKEFS_AUTH_ENCRYPT_SECRET_KEY=${LAKEFS_AUTH_ENCRYPT_SECRET_KEY:-some random secret string}
-      - LAKEFS_DATABASE_CONNECTION_STRING=postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-pass}@postgres/lakefs?sslmode=disable
+      - LAKEFS_DATABASE_CONNECTION_STRING=joj2-postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-pass}@postgres/lakefs?sslmode=disable
       - LAKEFS_BLOCKSTORE_TYPE=${LAKEFS_BLOCKSTORE_TYPE:-s3}
-      - LAKEFS_BLOCKSTORE_S3_ENDPOINT=http://minio:9000
+      - LAKEFS_BLOCKSTORE_S3_ENDPOINT=http://joj2-minio:9000
       - LAKEFS_BLOCKSTORE_S3_FORCE_PATH_STYLE=true
       - LAKEFS_BLOCKSTORE_S3_CREDENTIALS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-minioadmin}
       - LAKEFS_BLOCKSTORE_S3_CREDENTIALS_ACCESS_SECRET_KEY=${AWS_SECRET_ACCESS_KEY:-minioadmin}
@@ -148,14 +148,14 @@ services:
       HORSE_USERNAME: ${TIGER_1_USERNAME:-tiger-1}
       HORSE_PASSWORD: ${TIGER_1_PASSWORD:-string}
       LAKEFS_S3_DOMAIN: s3.lakefs.example.com
-      LAKEFS_HOST: lakefs
+      LAKEFS_HOST: joj2-lakefs
       LAKEFS_PORT: 8000
       LAKEFS_USERNAME: ${TIGER_1_LAKEFS_USERNAME:-}
       LAKEFS_PASSWORD: ${TIGER_1_LAKEFS_PASSWORD:-}
-      REDIS_HOST: redis
+      REDIS_HOST: joj2-redis
       REDIS_PASSWORD: ${REDIS_PASSWORD:-sider}
       BACKEND_URL: rpc://
-      BROKER_URL: amqp://${RABBITMQ_USERNAME:-rabbitmq}:${RABBITMQ_PASSWORD:-pass}@rabbitmq:5672/${RABBITMQ_VHOST:-joj}
+      BROKER_URL: amqp://${RABBITMQ_USERNAME:-rabbitmq}:${RABBITMQ_PASSWORD:-pass}@joj2-rabbitmq:5672/${RABBITMQ_VHOST:-joj}
   tiger-2:
     restart: always
     image: ghcr.io/joint-online-judge/tiger:${TIGER_TAG:-latest}
@@ -173,13 +173,13 @@ services:
       HORSE_USERNAME: ${TIGER_2_USERNAME:-tiger-2}
       HORSE_PASSWORD: ${TIGER_2_USERNAME:-string}
       LAKEFS_S3_DOMAIN: s3.lakefs.example.com
-      LAKEFS_HOST: lakefs
+      LAKEFS_HOST: joj2-lakefs
       LAKEFS_PORT: 8000
       LAKEFS_USERNAME: ${TIGER_2_LAKEFS_USERNAME:-}
       LAKEFS_PASSWORD: ${TIGER_2_LAKEFS_PASSWORD:-}
-      REDIS_HOST: redis
+      REDIS_HOST: joj2-redis
       REDIS_PASSWORD: ${REDIS_PASSWORD:-sider}
       BACKEND_URL: rpc://
-      BROKER_URL: amqp://${RABBITMQ_USERNAME:-rabbitmq}:${RABBITMQ_PASSWORD:-pass}@rabbitmq:5672/${RABBITMQ_VHOST:-joj}
+      BROKER_URL: amqp://${RABBITMQ_USERNAME:-rabbitmq}:${RABBITMQ_PASSWORD:-pass}@joj2-rabbitmq:5672/${RABBITMQ_VHOST:-joj}
 networks:
   default:

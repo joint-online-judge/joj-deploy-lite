@@ -17,7 +17,7 @@ services:
     container_name: joj2-flower
     environment:
       CELERY_BACKEND_URL: rpc://
-      CELERY_BROKER_URL: amqp://${RABBITMQ_USERNAME:-rabbitmq}:${RABBITMQ_PASSWORD:-pass}@rabbitmq:5672/${RABBITMQ_VHOST:-joj}
+      CELERY_BROKER_URL: amqp://${RABBITMQ_USERNAME:-rabbitmq}:${RABBITMQ_PASSWORD:-pass}@joj2-rabbitmq:5672/${RABBITMQ_VHOST:-joj}
     ports:
       - '34768:5555'
     tty: true
@@ -27,7 +27,7 @@ services:
     image: rediscommander/redis-commander:latest
     container_name: joj2-redis-commander
     environment:
-      - REDIS_HOSTS=local:redis:6379:0:${REDIS_PASSWORD:-sider}
+      - REDIS_HOSTS=local:joj2-redis:6379:0:${REDIS_PASSWORD:-sider}
       - HTTP_USER=admin
       - HTTP_PASSWORD=drowssap
     ports:
