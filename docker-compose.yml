@@ -70,8 +70,8 @@ services:
       - /opt/joj_data/minio/config:/root/.minio
     networks:
       - default
+    command: server /data --console-address ":9091"
     tty: true
-    entrypoint: [ "server", "/data", "--console-address", ":9091"]
   lakefs:
     restart: always
     image: treeverse/lakefs:0.46.0
