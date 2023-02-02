@@ -81,7 +81,7 @@ services:
       - minio
     environment:
       - LAKEFS_AUTH_ENCRYPT_SECRET_KEY=${LAKEFS_AUTH_ENCRYPT_SECRET_KEY:-some random secret string}
-      - LAKEFS_DATABASE_CONNECTION_STRING=joj2-postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-pass}@postgres/lakefs?sslmode=disable
+      - LAKEFS_DATABASE_CONNECTION_STRING=postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-pass}@joj2-postgres/lakefs?sslmode=disable
       - LAKEFS_BLOCKSTORE_TYPE=${LAKEFS_BLOCKSTORE_TYPE:-s3}
       - LAKEFS_BLOCKSTORE_S3_ENDPOINT=http://joj2-minio:9000
       - LAKEFS_BLOCKSTORE_S3_FORCE_PATH_STYLE=true
