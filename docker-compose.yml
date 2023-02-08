@@ -43,6 +43,50 @@ services:
       OAUTH_GITHUB_ID: ${OAUTH_GITHUB_ID:-}
       OAUTH_GITHUB_SECRET: ${OAUTH_GITHUB_SECRET:-}
     tty: true
+  go-horse:
+    restart: always
+    image: ghcr.io/joint-online-judge/go-horse:master
+    container_name: joj2-go-horse
+    depends_on:
+      - postgres
+      - redis
+      - minio
+    ports:
+      - '34764:34764'
+    networks:
+      - default
+    environment:
+      HOST: joj2-go-horse
+      PORT: 34764
+      DB_HOST: joj2-postgres
+      DB_NAME: go_horse_production
+      DB_USERNAME: ${POSTGRES_USER:-postgres}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-pass}
+      DOMAIN: ${DOMAIN:-127.0.0.1:34765}
+      FORWARDED_ALLOW_IPS: ${FORWARDED_ALLOW_IPS:-*}
+      REDIS_HOST: joj2-redis
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-sider}
+      RABBITMQ_HOST: joj2-rabbitmq
+      RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-rabbitmq}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-pass}
+      RABBITMQ_VHOST: ${RABBITMQ_VHOST:-joj}
+      S3_HOST: joj2-minio
+      S3_PORT: 9000
+      S3_USERNAME: minioadmin
+      S3_PASSWORD: minioadmin
+      LAKEFS_S3_DOMAIN: s3.lakefs.example.com
+      LAKEFS_HOST: joj2-lakefs
+      LAKEFS_PORT: 8000
+      LAKEFS_USERNAME: ${LAKEFS_ACCESS_KEY_ID:-AKIAJBBEXWP4VZLK65TQ}
+      LAKEFS_PASSWORD: ${LAKEFS_SECRET_ACCESS_KEY:-2AITo44il6u2S05zJASbDsBFZuPBQl6jC0tXW3Hq}
+      JWT_SECRET: 33723d5b188ff63597367fa1d4ca7745524fa950802f844672c6c524e4c7ae0e
+      OAUTH_JACCOUNT: ${OAUTH_JACCOUNT:-false}
+      OAUTH_JACCOUNT_ID: ${OAUTH_JACCOUNT_ID:-}
+      OAUTH_JACCOUNT_SECRET: ${OAUTH_JACCOUNT_SECRET:-}
+      OAUTH_GITHUB: ${OAUTH_GITHUB:-false}
+      OAUTH_GITHUB_ID: ${OAUTH_GITHUB_ID:-}
+      OAUTH_GITHUB_SECRET: ${OAUTH_GITHUB_SECRET:-}
+    tty: true
   postgres:
     restart: always
     image: postgres:13.3
