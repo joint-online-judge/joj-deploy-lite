@@ -55,6 +55,7 @@ services:
       - '34764:34764'
     networks:
       - default
+    pid: host
     environment:
       HOST: joj2-go-horse
       PORT: 34764
