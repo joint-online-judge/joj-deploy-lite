@@ -45,7 +45,7 @@ services:
     tty: true
   go-horse:
     restart: always
-    image: ghcr.io/joint-online-judge/go-horse:master
+    image: ghcr.io/joint-online-judge/go-horse:latest
     container_name: joj2-go-horse
     depends_on:
       - postgres
