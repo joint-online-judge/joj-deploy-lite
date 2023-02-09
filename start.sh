@@ -29,15 +29,21 @@ fi
 
 case "$1" in
 "lite")
-    docker-compose -f docker-compose.yml -f docker-compose-lite.yml pull
+    if [[ $2 != "--no-pull" ]]; then
+        docker-compose -f docker-compose.yml -f docker-compose-lite.yml pull
+    fi
     docker-compose -f docker-compose.yml -f docker-compose-lite.yml up -d
     ;;
 "dev")
-    docker-compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-ui.yml pull
+    if [[ $2 != "--no-pull" ]]; then
+        docker-compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-ui.yml pull
+    fi
     docker-compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-ui.yml -p joj2 up -d --force-recreate
     ;;
 "stage")
-    docker-compose -f docker-compose-stage.yml pull
+    if [[ $2 != "--no-pull" ]]; then
+        docker-compose -f docker-compose-stage.yml pull
+    fi
     docker-compose -f docker-compose-stage.yml -p joj2 up -d
     ;;
 esac
