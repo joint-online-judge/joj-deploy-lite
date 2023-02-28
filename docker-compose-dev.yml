@@ -30,6 +30,12 @@ services:
       - ${TIGER_SRC}/runner:/root/runner
       - ${TIGER_SRC}/toolchains:/root/toolchains
       - ${ELEPHANT_SRC}/joj/elephant:/root/.venv/lib/python3.8/site-packages/joj/elephant
+  go-tiger-1:
+    environment:
+      DEBUG: "true"
+  go-tiger-2:
+    environment:
+      DEBUG: "true"
   postgres:
     ports:
       - '5433:5432'
