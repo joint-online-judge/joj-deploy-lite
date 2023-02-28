@@ -32,18 +32,18 @@ case "$1" in
     if [[ $2 != "--no-pull" ]]; then
         docker-compose -f docker-compose.yml -f docker-compose-lite.yml pull
     fi
-    docker-compose -f docker-compose.yml -f docker-compose-lite.yml up -d
+    docker-compose -f docker-compose.yml -f docker-compose-lite.yml up -d --remove-orphans
     ;;
 "dev")
     if [[ $2 != "--no-pull" ]]; then
         docker-compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-ui.yml pull
     fi
-    docker-compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-ui.yml -p joj2 up -d --force-recreate
+    docker-compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-ui.yml -p joj2 up -d --remove-orphans --force-recreate
     ;;
 "stage")
     if [[ $2 != "--no-pull" ]]; then
         docker-compose -f docker-compose-stage.yml pull
     fi
-    docker-compose -f docker-compose-stage.yml -p joj2 up -d
+    docker-compose -f docker-compose-stage.yml -p joj2 up -d --remove-orphans
     ;;
 esac
