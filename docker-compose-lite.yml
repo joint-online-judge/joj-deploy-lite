@@ -1,6 +1,7 @@
+---
 version: '3'
 services:
-  horse:
-    image: ghcr.io/joint-online-judge/horse:test
-  tiger-1:
-    image: ghcr.io/joint-online-judge/tiger:test
+    horse:
+        image: ghcr.io/joint-online-judge/horse:test
+    tiger-1:
+        image: ghcr.io/joint-online-judge/tiger:test

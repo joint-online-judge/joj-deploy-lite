@@ -1,71 +1,72 @@
+---
 services:
-  lakefs:
-    ports:
-      - "34766:8000"
-  adminer:
-    restart: always
-    image: adminer
-    container_name: joj2-adminer
-    ports:
-      - '34767:8080'
-    networks:
-      - default
-    tty: true
-  flower:
-    restart: always
-    image: mher/flower
-    container_name: joj2-flower
-    environment:
-      CELERY_BACKEND_URL: rpc://
-      CELERY_BROKER_URL: amqp://${RABBITMQ_USERNAME:-rabbitmq}:${RABBITMQ_PASSWORD:-pass}@joj2-rabbitmq:5672/${RABBITMQ_VHOST:-joj}
-    ports:
-      - '34768:5555'
-    tty: true
-    command: celery flower --basic_auth=admin:drowssap
-  redis-commander:
-    restart: always
-    image: rediscommander/redis-commander:latest
-    container_name: joj2-redis-commander
-    environment:
-      - REDIS_HOSTS=local:joj2-redis:6379:0:${REDIS_PASSWORD:-sider}
-      - HTTP_USER=admin
-      - HTTP_PASSWORD=drowssap
-    ports:
-      - "34769:8081"
-  rabbitmq:
-    ports:
-      - '34770:15672'
-    command: [ "/bin/bash", "/root/rabbitmq-start.sh", "--ui" ]
-  dozzle:
-    restart: always
-    image: amir20/dozzle:latest
-    container_name: joj2-dozzle
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    ports:
-      - "34771:8080"
-    environment:
-      - DOZZLE_USERNAME=admin
-      - DOZZLE_PASSWORD=drowssap
-      - DOZZLE_KEY=2A472D4B6150645367566B5970337336
-  asynqmon:
-    restart: always
-    image: hibiken/asynqmon
-    container_name: joj2-asynqmon
-    environment:
-      - REDIS_ADDR=joj2-redis:6379
-      - REDIS_DB=0
-      - REDIS_PASSWORD=${REDIS_PASSWORD:-sider}
-    ports:
-      - '34772:8080'
-    tty: true
-  minio-console:
-    restart: always
-    image: minio/console
-    container_name: joj2-minio-console
-    environment:
-      - CONSOLE_MINIO_SERVER=http://minio:9000
-    ports:
-      - '34773:9090'
-    entrypoint: [ "/console", "server"]
-    tty: true
+    lakefs:
+        ports:
+            - 34766:8000
+    adminer:
+        restart: always
+        image: adminer
+        container_name: joj2-adminer
+        ports:
+            - 34767:8080
+        networks:
+            - default
+        tty: true
+    flower:
+        restart: always
+        image: mher/flower
+        container_name: joj2-flower
+        environment:
+            CELERY_BACKEND_URL: rpc://
+            CELERY_BROKER_URL: amqp://${RABBITMQ_USERNAME:-rabbitmq}:${RABBITMQ_PASSWORD:-pass}@joj2-rabbitmq:5672/${RABBITMQ_VHOST:-joj}
+        ports:
+            - 34768:5555
+        tty: true
+        command: celery flower --basic_auth=admin:drowssap
+    redis-commander:
+        restart: always
+        image: rediscommander/redis-commander:latest
+        container_name: joj2-redis-commander
+        environment:
+            - REDIS_HOSTS=local:joj2-redis:6379:0:${REDIS_PASSWORD:-sider}
+            - HTTP_USER=admin
+            - HTTP_PASSWORD=drowssap
+        ports:
+            - 34769:8081
+    rabbitmq:
+        ports:
+            - 34770:15672
+        command: [/bin/bash, /root/rabbitmq-start.sh, --ui]
+    dozzle:
+        restart: always
+        image: amir20/dozzle:latest
+        container_name: joj2-dozzle
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+        ports:
+            - 34771:8080
+        environment:
+            - DOZZLE_USERNAME=admin
+            - DOZZLE_PASSWORD=drowssap
+            - DOZZLE_KEY=2A472D4B6150645367566B5970337336
+    asynqmon:
+        restart: always
+        image: hibiken/asynqmon
+        container_name: joj2-asynqmon
+        environment:
+            - REDIS_ADDR=joj2-redis:6379
+            - REDIS_DB=0
+            - REDIS_PASSWORD=${REDIS_PASSWORD:-sider}
+        ports:
+            - 34772:8080
+        tty: true
+    minio-console:
+        restart: always
+        image: minio/console
+        container_name: joj2-minio-console
+        environment:
+            - CONSOLE_MINIO_SERVER=http://minio:9000
+        ports:
+            - 34773:9090
+        entrypoint: [/console, server]
+        tty: true

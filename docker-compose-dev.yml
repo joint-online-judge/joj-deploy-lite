@@ -1,41 +1,42 @@
+---
 version: '3'
 services:
-  horse:
-    image: ghcr.io/joint-online-judge/horse:test
-    environment:
-      DEBUG: "true"
-    volumes:
-      - ${HORSE_SRC}/joj/horse:/root/joj/horse
-      - ${HORSE_SRC}/migrations:/root/migrations
-      - ${ELEPHANT_SRC}/joj/elephant:/root/.venv/lib/python3.8/site-packages/joj/elephant
-  go-horse:
-    environment:
-      DEBUG: "true"
-  tiger-1:
-    image: ghcr.io/joint-online-judge/tiger:test
-    environment:
-      DEBUG: "true"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ${TIGER_SRC}/joj/tiger:/root/joj/tiger
-      - ${TIGER_SRC}/runner:/root/runner
-      - ${TIGER_SRC}/toolchains:/root/toolchains
-      - ${ELEPHANT_SRC}/joj/elephant:/root/.venv/lib/python3.8/site-packages/joj/elephant
-  tiger-2:
-    environment:
-      DEBUG: "true"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ${TIGER_SRC}/joj/tiger:/root/joj/tiger
-      - ${TIGER_SRC}/runner:/root/runner
-      - ${TIGER_SRC}/toolchains:/root/toolchains
-      - ${ELEPHANT_SRC}/joj/elephant:/root/.venv/lib/python3.8/site-packages/joj/elephant
-  go-tiger-1:
-    environment:
-      DEBUG: "true"
-  go-tiger-2:
-    environment:
-      DEBUG: "true"
-  postgres:
-    ports:
-      - '5433:5432'
+    horse:
+        image: ghcr.io/joint-online-judge/horse:test
+        environment:
+            DEBUG: 'true'
+        volumes:
+            - ${HORSE_SRC}/joj/horse:/root/joj/horse
+            - ${HORSE_SRC}/migrations:/root/migrations
+            - ${ELEPHANT_SRC}/joj/elephant:/root/.venv/lib/python3.8/site-packages/joj/elephant
+    go-horse:
+        environment:
+            DEBUG: 'true'
+    tiger-1:
+        image: ghcr.io/joint-online-judge/tiger:test
+        environment:
+            DEBUG: 'true'
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ${TIGER_SRC}/joj/tiger:/root/joj/tiger
+            - ${TIGER_SRC}/runner:/root/runner
+            - ${TIGER_SRC}/toolchains:/root/toolchains
+            - ${ELEPHANT_SRC}/joj/elephant:/root/.venv/lib/python3.8/site-packages/joj/elephant
+    tiger-2:
+        environment:
+            DEBUG: 'true'
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ${TIGER_SRC}/joj/tiger:/root/joj/tiger
+            - ${TIGER_SRC}/runner:/root/runner
+            - ${TIGER_SRC}/toolchains:/root/toolchains
+            - ${ELEPHANT_SRC}/joj/elephant:/root/.venv/lib/python3.8/site-packages/joj/elephant
+    go-tiger-1:
+        environment:
+            DEBUG: 'true'
+    go-tiger-2:
+        environment:
+            DEBUG: 'true'
+    postgres:
+        ports:
+            - 5433:5432

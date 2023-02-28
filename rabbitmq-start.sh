@@ -24,5 +24,3 @@ if [[ "$#" -eq "1" && $1 == "--ui" ]]; then
     rabbitmq-plugins enable --offline rabbitmq_management
 fi
 rabbitmq-server $@
-
-
