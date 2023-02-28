@@ -226,5 +226,41 @@ services:
       REDIS_PASSWORD: ${REDIS_PASSWORD:-sider}
       BACKEND_URL: rpc://
       BROKER_URL: amqp://${RABBITMQ_USERNAME:-rabbitmq}:${RABBITMQ_PASSWORD:-pass}@joj2-rabbitmq:5672/${RABBITMQ_VHOST:-joj}
+  go-tiger-1:
+    restart: always
+    image: ghcr.io/joint-online-judge/go-tiger:latest
+    privileged: true
+    depends_on:
+      - go-horse
+      - redis
+    networks:
+      - default
+    tty: true
+    container_name: joj2-go-tiger-1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      HORSE_USERNAME: ${TIGER_1_USERNAME:-tiger-1}
+      HORSE_PASSWORD: ${TIGER_1_PASSWORD:-string}
+      REDIS_HOST: joj2-redis
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-sider}
+  go-tiger-2:
+    restart: always
+    image: ghcr.io/joint-online-judge/go-tiger:latest
+    privileged: true
+    depends_on:
+      - go-horse
+      - redis
+    networks:
+      - default
+    tty: true
+    container_name: joj2-go-tiger-2
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      HORSE_USERNAME: ${TIGER_2_USERNAME:-tiger-2}
+      HORSE_PASSWORD: ${TIGER_2_PASSWORD:-string}
+      REDIS_HOST: joj2-redis
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-sider}
 networks:
   default:
