@@ -59,3 +59,13 @@ services:
     ports:
       - '34772:8080'
     tty: true
+  minio-console:
+    restart: always
+    image: minio/console
+    container_name: joj2-minio-console
+    environment:
+      - CONSOLE_MINIO_SERVER=http://minio:9000
+    ports:
+      - '34773:9090'
+    entrypoint: [ "/console", "server"]
+    tty: true
