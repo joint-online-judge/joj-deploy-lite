@@ -35,7 +35,7 @@ services:
   rabbitmq:
     ports:
       - '34770:15672'
-    command: [ "/bin/bash", "/root/rabbitmq-start.sh", "--ui"]
+    command: [ "/bin/bash", "/root/rabbitmq-start.sh", "--ui" ]
   dozzle:
     restart: always
     image: amir20/dozzle:latest
@@ -48,3 +48,14 @@ services:
       - DOZZLE_USERNAME=admin
       - DOZZLE_PASSWORD=drowssap
       - DOZZLE_KEY=2A472D4B6150645367566B5970337336
+  asynqmon:
+    restart: always
+    image: hibiken/asynqmon
+    container_name: joj2-asynqmon
+    environment:
+      - REDIS_ADDR=joj2-redis:6379
+      - REDIS_DB=0
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-sider}
+    ports:
+      - '34772:8080'
+    tty: true
